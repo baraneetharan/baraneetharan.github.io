@@ -1,9 +1,65 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title></title>
-</head>
-<body>
-<h1>Hello World</h1>
-</body>
-</html>
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Untitled Document.md</title><style></style></head><body id="preview">
+<p><a href="http://mherman.org/blog/2015/10/22/node-postgres-sequelize/#.WCVa7dV97IU">Reference</a></p>
+<p>Create project root folder sa seqpg1</p>
+<p>Create package.json</p>
+<blockquote>
+<p>npm init -y</p>
+</blockquote>
+<p>Add dependencies</p>
+<pre><code>    &quot;express&quot;: &quot;^4.14.0&quot;,
+    &quot;pg&quot;: &quot;^6.1.0&quot;,
+    &quot;pg-hstore&quot;: &quot;^2.3.2&quot;,
+    &quot;sequelize&quot;: &quot;^3.25.0&quot;,
+    &quot;sequelize-cli&quot;: &quot;^2.4.0&quot;
+</code></pre>
+<p>Add .sequelizerc file</p>
+<pre><code>var path = require('path');
+
+module.exports = {
+  'config': path.resolve('./server', 'config.json'),
+  'migrations-path': path.resolve('./server', 'migrations'),
+  'models-path': path.resolve('./server', 'models'),
+  'seeders-path': path.resolve('./server', 'seeders')
+}
+</code></pre>
+<p>To create the files (config.json) and folders (“migrations”, “models”, and “seeders”)</p>
+<blockquote>
+<p>sequelize init</p>
+</blockquote>
+<p>Take a look at the index.js file within the “models” directory:
+Here, we establish a connection to the database, grab all the model files from the current directory, add them to the db object, and apply any relations between each model (if any).</p>
+<p>update database connection in config.json</p>
+<p>create a model along with a migration</p>
+<p>Todo model</p>
+<blockquote>
+<p>sequelize model:create --name Todo --attributes “title:string, complete:boolean,UserId:integer”
+User model
+sequelize model:create --name User --attributes “email:string”</p>
+</blockquote>
+<p>Associations</p>
+<p>To associate the models (one user can have many todos), make the following updates…</p>
+<p>// associations can be defined here
+todo.js</p>
+<pre><code>Todo.belongsTo(models.User);
+</code></pre>
+<p>user.js</p>
+<pre><code>User.hasMany(models.Todo);
+</code></pre>
+<p>add an additional attribute to the complete field in the todo.js</p>
+<pre><code>complete: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
+</code></pre>
+<blockquote>
+<p>sequelize db:migrate</p>
+</blockquote>
+<pre><code>Loaded configuration file &quot;server\config.json&quot;.
+Using environment &quot;development&quot;.
+== 20161111063723-create-todo: migrating =======
+== 20161111063723-create-todo: migrated (0.353s)
+== 20161111063954-create-user: migrating =======
+== 20161111063954-create-user: migrated (0.125s)
+</code></pre>
+
+</body></html>
