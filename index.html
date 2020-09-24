@@ -42,7 +42,7 @@
             };
 
             infoWindow.setPosition(pos);
-            infoWindow.setContent('Location found.');
+            infoWindow.setContent('Your location found at '+position.coords.latitude+','+position.coords.longitude);
             infoWindow.open(map);
             map.setCenter(pos);
           }, function() {
