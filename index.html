@@ -1,70 +1,43 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Geolocation</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-  </head>
-  <body>
-Google map
-    <div id="map"></div>
-    <script>
-      // Note: This example requires that you consent to location sharing when
-      // prompted by your browser. If you see the error "The Geolocation service
-      // failed.", it means you probably did not give permission for the browser to
-      // locate you.
-      var map, infoWindow;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 6
-        });
-        infoWindow = new google.maps.InfoWindow;
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+  <script type="text/javascript">
+  // this function is triggered when geolocation has found coordinates
+  function geolocationReturnedCoordinates(coordinates) {
+    document.getElementById('log').innerHTML = 
+      'lat: ' + coordinates.coords.latitude +
+      '<br>lng: ' + coordinates.coords.longitude +
+      '<br>accuracy: ' + coordinates.coords.accuracy;
+    // Here would be a good place to call Reverse geocoding, since you have the coordinates here.
+    GeoCode(new google.maps.LatLng(coordinates.coords.latitude, coordinates.coords.longitude));
+  }
 
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-
-            infoWindow.setPosition(pos);
-            infoWindow.setContent('Your location found at '+position.coords.latitude+','+position.coords.longitude);
-            infoWindow.open(map);
-            map.setCenter(pos);
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
-        }
+  // geocoder
+  geocoder = new google.maps.Geocoder();
+  function GeoCode(latlng) {
+    // This is making the Geocode request
+    geocoder.geocode({'location': latlng }, function (results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        var address = (results[0].formatted_address);
+        //This is placing the returned address in the 'Address' field on the HTML form  
+        document.getElementById('Address').value = results[0].formatted_address;
       }
+    });
+  }
 
-      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
-                              'Error: Your browser doesn\'t support geolocation.');
-        infoWindow.open(map);
-      }
-    </script>
-    <script defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzNno8v3v3mtxUuyOUz9RH97XyB6VfmYw&callback=initMap">
-    </script>
-  </body>
+  function search_position_and_address() {
+    // we start the request, to ask the position of the client
+    // we will pass geolocationReturnedCoordinates as the success callback
+    navigator.geolocation.getCurrentPosition(geolocationReturnedCoordinates, null, null);
+  }
+  </script>
+</head>
+<body>
+  <input type="button" value="GO" onclick="search_position_and_address()"> Get position (coordinates) of the client.  -- Then look for the address
+  <div id="log"></div>
+  <input id="Address" placeholder="Address">
+</body>
 </html>
