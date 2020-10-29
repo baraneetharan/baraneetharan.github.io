@@ -52,11 +52,7 @@
                 .then((data) => {
                   console.log(data);
                   let parts = data.results[0].address_components;
-                console.log(${data.results[0].formatted_address});
-                  document.body.insertAdjacentHTML(
-                    "beforeend",
-                    `<p>Formatted: ${data.results[0].formatted_address}</p>`
-                  );
+                console.log(data.results[0].formatted_address);                  
                 })
                 .catch((err) => console.warn(err.message));
               var pos = {
