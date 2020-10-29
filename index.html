@@ -47,6 +47,18 @@
               console.log(varlatlong);
               url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=`+varlatlong+`&key=AIzaSyDzNno8v3v3mtxUuyOUz9RH97XyB6VfmYw`;
               console.log(url);
+              fetch(url)
+                .then((response) => response.json())
+                .then((data) => {
+                  console.log(data);
+                  let parts = data.results[0].address_components;
+                console.log(${data.results[0].formatted_address});
+                  document.body.insertAdjacentHTML(
+                    "beforeend",
+                    `<p>Formatted: ${data.results[0].formatted_address}</p>`
+                  );
+                })
+                .catch((err) => console.warn(err.message));
               var pos = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
