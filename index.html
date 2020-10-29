@@ -53,8 +53,6 @@ Google map
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
         }
-        console.log(position.coords.latitude);
-        console.log(position.coords.longitude);
         let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=position.coords.latitude,position.coords.longitude&key=AIzaSyDzNno8v3v3mtxUuyOUz9RH97XyB6VfmYw`;
       fetch(url)
         .then(response => response.json())
@@ -65,27 +63,7 @@ Google map
             "beforeend",
             `<p>Formatted: ${data.results[0].formatted_address}</p>`
           );
-          parts.forEach(part => {
-            if (part.types.includes("country")) {
-              //we found "country" inside the data.results[0].address_components[x].types array
-              document.body.insertAdjacentHTML(
-                "beforeend",
-                `<p>COUNTRY: ${part.long_name}</p>`
-              );
-            }
-            if (part.types.includes("administrative_area_level_1")) {
-              document.body.insertAdjacentHTML(
-                "beforeend",
-                `<p>PROVINCE: ${part.long_name}</p>`
-              );
-            }
-            if (part.types.includes("administrative_area_level_3")) {
-              document.body.insertAdjacentHTML(
-                "beforeend",
-                `<p>LEVEL 3: ${part.long_name}</p>`
-              );
-            }
-          });
+        
         })
         .catch(err => console.warn(err.message));
       }
