@@ -28,6 +28,7 @@
       // failed.", it means you probably did not give permission for the browser to
       // locate you.
       var map, infoWindow, varlat, varlong, url, varlatlong;
+      var varaddress;
       function initMap() {
         map = new google.maps.Map(document.getElementById("map"), {
           center: { lat: -34.397, lng: 150.644 },
@@ -41,34 +42,43 @@
             function (position) {
               varlat = position.coords.latitude;
               varlong = position.coords.longitude;
-              varlatlong=position.coords.latitude+','+position.coords.longitude;
+              varlatlong =
+                position.coords.latitude + "," + position.coords.longitude;
               console.log(varlat);
               console.log(varlong);
               console.log(varlatlong);
-              url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=`+varlatlong+`&key=AIzaSyDzNno8v3v3mtxUuyOUz9RH97XyB6VfmYw`;
+              url =
+                `https://maps.googleapis.com/maps/api/geocode/json?latlng=` +
+                varlatlong +
+                `&key=AIzaSyDzNno8v3v3mtxUuyOUz9RH97XyB6VfmYw`;
               console.log(url);
+
               fetch(url)
                 .then((response) => response.json())
                 .then((data) => {
                   console.log(data);
                   let parts = data.results[0].address_components;
-                console.log(data.results[0].formatted_address);                  
+                  varaddress = data.results[0].formatted_address;
+                  var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                  };
+
+                  infoWindow.setPosition(pos);
+                  console.log(varaddress);
+                  infoWindow.setContent(
+                    "Your location found at " +
+                      position.coords.latitude +
+                      "," +
+                      position.coords.longitude +
+                      "\nYour Address : " +
+                      varaddress
+                  );
+                  infoWindow.open(map);
+                  map.setCenter(pos);
+                  console.log(varaddress);
                 })
                 .catch((err) => console.warn(err.message));
-              var pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              };
-
-              infoWindow.setPosition(pos);
-              infoWindow.setContent(
-                "Your location found at " +
-                  position.coords.latitude +
-                  "," +
-                  position.coords.longitude
-              );
-              infoWindow.open(map);
-              map.setCenter(pos);
             },
             function () {
               handleLocationError(true, infoWindow, map.getCenter());
