@@ -43,7 +43,8 @@
               varlong = position.coords.longitude;
               console.log(varlat);
               console.log(varlong);
-
+              let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=varlat,varlong&key=AIzaSyDzNno8v3v3mtxUuyOUz9RH97XyB6VfmYw`;
+              console.log(url);
               var pos = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
