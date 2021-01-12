@@ -61,6 +61,8 @@ function geocodeLatLng(geocoder, map, infowindow) {
         });
         infowindow.setContent(results[0].formatted_address);
         infowindow.open(map, marker);
+        // KGiSL API Call goes here
+        alert(mylat+","+mylong+", "+results[0].formatted_address);
       } else {
         window.alert("No results found");
       }
