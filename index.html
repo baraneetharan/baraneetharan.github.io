@@ -54,7 +54,7 @@ function geocodeLatLng(geocoder, map, infowindow) {
   geocoder.geocode({ location: latlng }, (results, status) => {
     if (status === "OK") {
       if (results[0]) {
-        map.setZoom(11);
+        map.setZoom(15);
         const marker = new google.maps.Marker({
           position: latlng,
           map: map,
@@ -62,7 +62,7 @@ function geocodeLatLng(geocoder, map, infowindow) {
         infowindow.setContent(results[0].formatted_address);
         infowindow.open(map, marker);
         // KGiSL API Call goes here
-        alert(mylat+","+mylong+", "+results[0].formatted_address);
+        //alert(mylat+","+mylong+", "+results[0].formatted_address);
       } else {
         window.alert("No results found");
       }
